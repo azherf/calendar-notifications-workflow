@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueGoodWizard from 'vue-good-wizard';
+Vue.prototype.$eventBus = new Vue();
+// import VueGoodWizard from 'vue-good-wizard';
+import VueGoodWizard from '../src';
 
 Vue.config.productionTip = false
 
