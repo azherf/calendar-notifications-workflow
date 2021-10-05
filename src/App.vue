@@ -59,12 +59,11 @@
 
 <style>
     #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI emoji;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
     }
     .workflowItemsContainer {
         display: flex;

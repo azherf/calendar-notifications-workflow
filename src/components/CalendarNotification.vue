@@ -15,7 +15,7 @@
                                     <label for="wf-name" class="wf-label">{{config.generalDetails.wfName.label}}</label>
                                 </div>
                                 <div class="inputDiv">
-                                    <input type="text" id="wf-name" name="wf-name" placeholder="Name" v-model.lazy.trim="config.generalDetails.wfName.value" class="wf-input"> 
+                                    <input type="text" id="wf-name" name="wf-name" v-model.lazy.trim="config.generalDetails.wfName.value" class="wf-input"> 
                                 </div>
                             </div>
                             <div class="DescriptionField">
@@ -23,7 +23,7 @@
                                     <label for="wf-description" class="wf-label">{{config.generalDetails.wfDescription.label}}</label>
                                 </div>
                                 <div class="inputDiv">
-                                    <textarea id="wf-description" name="wf-description" rows="10" placeholder="Description" v-model.lazy.trim="config.generalDetails.wfDescription.value" class="wf-textarea"></textarea>
+                                    <textarea id="wf-description" name="wf-description" rows="10" v-model.lazy.trim="config.generalDetails.wfDescription.value" class="wf-textarea"></textarea>
                                 </div>
                             </div>
                         </form>
@@ -424,7 +424,7 @@
         width: 100%;
         padding: 10px 0 10px 10px;
         color: #383838;
-        border-radius: 6px;
+        border-radius: 4px;
         border: 1px solid #9e9e9e;
     }
 
@@ -433,7 +433,7 @@
     }
 
     .generalDetailsMainContainer form textarea {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI emoji;
     }
 
     .generalDetailsMainContainer form input:focus,
