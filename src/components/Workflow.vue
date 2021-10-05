@@ -29,6 +29,9 @@
         padding: 15px;
         margin: 15px;
         position: relative;
+
+        background: #f1f1f1;
+        border-radius: 5px;
     }
 
     .workflowItem:hover {
