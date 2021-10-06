@@ -61,11 +61,37 @@
                         </div>
                         <div class="selectedList">
                             <h4 class="itemsTitle">Selected Roles and Templates</h4>
-                            <div class="integrationType" v-for="role in config.rolesAndTemplates" :key="role.id">
-                                {{role.name}}
-                            </div>    
+                            <div class="selectedRole" v-for="role in config.rolesAndTemplates" :key="role.id">
+                                <div class="integrationType">
+                                    {{role.name}}
+                                </div>    
+                                <div class="markdownTemplate" @click="openRoleTemplatesPanel">
+                                    Template
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <slide-out dock="right" target="#wizard__body__step" resizable :visible.sync="visible" title="Markdown template">
+                        <form @submit.prevent="saveTemplate">
+                            <div class="nameField">
+                                <div class="labelDiv">
+                                    <label for="wf-name" class="wf-label">Subject</label>
+                                </div>
+                                <div class="inputDiv">
+                                    <input type="text" id="wf-name" name="wf-name" v-model.lazy.trim="subject" class="wf-input"> 
+                                </div>
+                            </div>
+                            <div class="DescriptionField">
+                                <div class="labelDiv">
+                                    <label for="wf-description" class="wf-label">Content</label>
+                                </div>
+                                <div class="inputDiv">
+                                    <textarea id="wf-description" name="wf-description" rows="10" v-model.lazy.trim="content" class="wf-textarea"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit">Save</button>
+                        </form>
+                    </slide-out>
                 </template>
             </div>
             <div slot="page4">
@@ -125,13 +151,16 @@
 
 <script>
     // import GeneralDetails from './GeneralDetails.vue';
-    // import Vue from 'vue';
     // import HelloWorld from './HelloWorld.vue';
     import uniqueId from 'lodash.uniqueid';
+
+    // import Slideout from '@hyjiacan/vue-slideout'
+    import '@hyjiacan/vue-slideout/lib/slideout.css'
 
     export default {
         name: "calendar-notifications",
         components: {
+            // Slideout
             // GeneralDetails,
             // HelloWorld
         },
@@ -143,6 +172,7 @@
         },
         data() {
             return {
+                visible: false,
                 steps: [
                     {
                         id: "generalDetails",
@@ -280,7 +310,8 @@
                     rolesAndTemplates: [],
                     outboundChannels: []
                 },
-                
+                subject: "",
+                content: ""
             };
         },
         computed: {
@@ -370,8 +401,22 @@
                  *      
                  * }
                  */
+            },
+            onClosing (e) {
+                // prevent close and wait
+                e.pause = true
+                // close after 3 seconds
+                setTimeout(() => {
+                    // assign true to close, do nothing or assign false to cancel close.
+                    e.resume = true
+                }, 3000)
+            },
+            openRoleTemplatesPanel() {
+                this.visible = true;
+            },
+            saveTemplate() {
+                console.log("Saving template");
             }
-
         },
     };
 </script>
@@ -406,21 +451,35 @@
         color: #9e9e9e;
     }
 
+    .vue-slideout-content {
+        margin: 0 10%;
+        display: flex;
+        color: #9e9e9e;
+    }
+
     .generalDetailsMainContainer form {
         width: 100%;
     }
 
-    .generalDetailsMainContainer form .nameField {
+    .vue-slideout-content form {
+        width: 90%;
+    }
+
+    .generalDetailsMainContainer form .nameField,
+    .vue-slideout-content form .nameField {
         margin: 10px 0 20px;
     }
 
-    .generalDetailsMainContainer form .labelDiv{
+    .generalDetailsMainContainer form .labelDiv,
+    .vue-slideout-content form .labelDiv {
         text-align: left;
         padding: 5px 0 10px;
     }
 
     .generalDetailsMainContainer form input,
-    .generalDetailsMainContainer form textarea {
+    .vue-slideout-content form input,
+    .generalDetailsMainContainer form textarea,
+    .vue-slideout-content form textarea {
         width: 100%;
         padding: 10px 0 10px 10px;
         color: #383838;
@@ -432,12 +491,15 @@
         
     }
 
-    .generalDetailsMainContainer form textarea {
+    .generalDetailsMainContainer form textarea,
+    .vue-slideout-content form textarea {
         font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI emoji;
     }
 
     .generalDetailsMainContainer form input:focus,
-    .generalDetailsMainContainer form textarea:focus {
+    .generalDetailsMainContainer form textarea:focus,
+    .vue-slideout-content form input:focus,
+    .vue-slideout-content form textarea:focus {
         outline: none !important;
             border-color: #51abe4;
         box-shadow: 0 0 10px #51abe4;
