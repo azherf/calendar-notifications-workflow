@@ -10,22 +10,25 @@
                 <template>
                     <div class="generalDetailsMainContainer">
                         <form>
-                            <div class="nameField">
+                            <div class="nameField form-group" :class="{ 'form-group--error': $v.config.generalDetails.wfName.value.$error }">
                                 <div class="labelDiv">
                                     <label for="wf-name" class="wf-label">{{config.generalDetails.wfName.label}}</label>
                                 </div>
                                 <div class="inputDiv">
-                                    <input type="text" id="wf-name" name="wf-name" v-model.lazy.trim="config.generalDetails.wfName.value" class="wf-input"> 
+                                    <input type="text" id="wf-name" name="wf-name" v-model.lazy.trim="$v.config.generalDetails.wfName.value.$model" class="wf-input"> 
                                 </div>
                             </div>
-                            <div class="DescriptionField">
+                            <div class="fieldError" v-if="!$v.config.generalDetails.wfName.value.required">Field is required</div>
+                            <div class="fieldError" v-if="!$v.config.generalDetails.wfName.value.minLength">Name must have at least {{$v.config.generalDetails.wfName.value.$params.minLength.min}} letters.</div>
+                            <div class="DescriptionField form-group" :class="{ 'form-group--error': $v.config.generalDetails.wfDescription.value.$error }">
                                 <div class="labelDiv">
                                     <label for="wf-description" class="wf-label">{{config.generalDetails.wfDescription.label}}</label>
                                 </div>
                                 <div class="inputDiv">
-                                    <textarea id="wf-description" name="wf-description" rows="10" v-model.lazy.trim="config.generalDetails.wfDescription.value" class="wf-textarea"></textarea>
+                                    <textarea id="wf-description" name="wf-description" rows="10" v-model.lazy.trim="$v.config.generalDetails.wfDescription.value.$model" class="wf-textarea"></textarea>
                                 </div>
                             </div>
+                            <div class="fieldError" v-if="!$v.config.generalDetails.wfDescription.value.required">Field is required</div>
                         </form>
                     </div>
                 </template>
@@ -155,7 +158,9 @@
     import uniqueId from 'lodash.uniqueid';
 
     // import Slideout from '@hyjiacan/vue-slideout'
-    import '@hyjiacan/vue-slideout/lib/slideout.css'
+    import '@hyjiacan/vue-slideout/lib/slideout.css';
+
+    import { required, minLength } from 'vuelidate/lib/validators';
 
     export default {
         name: "calendar-notifications",
@@ -314,6 +319,25 @@
                 content: ""
             };
         },
+        validations: {
+            config: {
+                generalDetails: {
+                    wfName: {
+                        label: "Name",
+                        value: {
+                            required,
+                            minLength: minLength(4)
+                        }
+                    },
+                    wfDescription: {
+                        label: "Description",
+                        value: {
+                            required
+                        }
+                    }
+                }
+            },
+        },
         computed: {
             summary: function() {
                 console.log("Inside computed property");
@@ -336,6 +360,10 @@
                 switch(currentPage) {
                     case 0:
                         //Run validations here
+                        this.$v.$touch();
+                        if(this.$v.$anyError) {
+                            errorCount++;
+                        }
                         break;
                     case 1:
                         //Run validations here
@@ -501,8 +529,17 @@
     .vue-slideout-content form input:focus,
     .vue-slideout-content form textarea:focus {
         outline: none !important;
-            border-color: #51abe4;
+        border-color: #51abe4;
         box-shadow: 0 0 10px #51abe4;
+    }
+
+    .form-group--error input,
+    .form-group--error textarea {
+        border: 1px solid #ff6565 !important;
+    }
+
+    .fieldError {
+        color: #ff6565;
     }
 
     .integrationTypesMainContainer {

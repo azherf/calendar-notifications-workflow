@@ -1,7 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
-import Slideout from '@hyjiacan/vue-slideout'
-import '@hyjiacan/vue-slideout/lib/slideout.css'
+import Vue from 'vue';
+import App from './App.vue';
+import Slideout from '@hyjiacan/vue-slideout';
+import '@hyjiacan/vue-slideout/lib/slideout.css';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
 // import Slideout component, and set the defaults props
 Vue.use(Slideout, {
